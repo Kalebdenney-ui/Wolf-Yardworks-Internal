@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wolf Yardworks — Monthly Performance Review</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --dark: #002722;
+    --mid: #17573c;
+    --white: #ffffff;
+    --off-white: #f4f7f5;
+    --light-green: #e8f2ee;
+    --border: #d0e0d8;
+    --text: #1a2e27;
+    --muted: #6a8a7a;
+  }
+
+  @media print {
+    html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: white !important; padding: 0 !important; margin: 0 !important; }
+    .no-print { display: none !important; }
+    @page { margin: 0.25in; size: letter; }
+    .page { transform: scale(0.95); transform-origin: top left; box-shadow: none !important; margin: 0 !important; padding-top: 0 !important; page-break-after: avoid; page-break-inside: avoid; }
+    .note-field, .write-field { border: none; border-bottom: 1px solid #bbb; background: transparent; }
+    .r-box.selected { background: var(--dark) !important; color: white !important; }
+  }
+
+  body {
+    background: #e8ece9;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: var(--text);
+    line-height: 1.4;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+  }
+
+  /* TOOLBAR */
+  .toolbar {
+    width: 816px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .toolbar-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: #6a8a7a;
+    text-transform: uppercase;
+  }
+
+  .toolbar-actions { display: flex; gap: 8px; }
+
+  .btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+
+  .btn-primary { background: var(--dark); color: white; }
+  .btn-secondary { background: transparent; color: var(--dark); border: 1px solid var(--dark); }
+  .btn:hover { opacity: 0.85; }
+
+  /* PAGE */
+  .page {
+    background: var(--white);
+    width: 816px;
+    padding: 0 32px 12px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.12);
+  }
+
+  /* HEADER */
+  .header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    padding-bottom: 8px;
+    border-bottom: 2.5px solid var(--dark);
+    margin-bottom: 10px;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 0.05em;
+    color: var(--dark);
+    line-height: 1;
+  }
+
+  .brand span { color: var(--mid); }
+
+  .doc-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 5px;
+  }
+
+  .meta-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-end;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .meta-input {
+    width: 130px;
+    border: none;
+    border-bottom: 1px solid var(--text);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: var(--text);
+    padding: 1px 2px;
+    outline: none;
+  }
+
+  .meta-input:focus { border-bottom-color: var(--mid); }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 5px;
+    align-items: center;
+    padding: 3px 10px;
+    background: var(--light-green);
+    border-left: 3px solid var(--mid);
+  }
+
+  .legend-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .legend-items { display: flex; gap: 14px; }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 9px;
+    color: var(--text);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.25em;
+    color: var(--white);
+    text-transform: uppercase;
+    background: var(--dark);
+    padding: 3px 10px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .section-label.light { background: var(--mid); }
+  .section-label.outline { background: transparent; color: var(--dark); border: 1px solid var(--dark); display: inline-block; margin-bottom: 6px; }
+
+  /* SCORE GRID */
+  .score-section { margin-bottom: 8px; }
+
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .score-item {
+    background: var(--white);
+    padding: 7px 10px;
+  }
+
+  .score-name {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .score-desc {
+    font-size: 9px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+
+  .rating-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .rating-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    width: 42px;
+    flex-shrink: 0;
+  }
+
+  .rating-boxes { display: flex; gap: 3px; }
+
+  .r-box {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+  }
+
+  .r-box:hover { border-color: var(--mid); color: var(--mid); }
+  .r-box.selected { background: var(--dark); border-color: var(--dark); color: white; }
+
+  .score-note {
+    border-top: 1px solid var(--border);
+    margin-top: 4px;
+    padding-top: 3px;
+  }
+
+  .note-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 7.5px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .note-field {
+    width: 100%;
+    height: 22px;
+    border: none;
+    border-bottom: 1px solid #bbb;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: var(--text);
+    outline: none;
+    padding: 0 2px;
+    resize: none;
+    overflow: hidden;
+  }
+
+  .note-field:focus { border-bottom-color: var(--mid); background: rgba(23,87,60,0.03); }
+
+  /* SECTION 2 */
+  .speed-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+
+  .speed-cell { background: var(--white); padding: 7px 10px; display: flex; flex-direction: column; justify-content: flex-end; }
+
+  .speed-cell-top { flex: 1; }
+
+  .speed-cell-label {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+  }
+
+  .speed-cell-sub {
+    font-size: 8.5px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 4px;
+  }
+
+  .write-field {
+    width: 100%;
+    height: 22px;
+    border: none;
+    border-bottom: 1px solid #bbb;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: var(--text);
+    outline: none;
+    padding: 0 2px;
+    resize: none;
+    overflow: hidden;
+  }
+
+  .write-field:focus { border-bottom-color: var(--mid); background: rgba(23,87,60,0.03); }
+
+  /* SECTION 3 */
+  .convo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+
+  .convo-card {
+    border: none;
+    padding: 8px 10px;
+    background: var(--off-white);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .convo-card.alt { background: var(--white); }
+
+  .convo-q {
+    font-size: 9.5px;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 6px;
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  /* SECTION 4 */
+  .leader-section {
+    border: 1.5px solid var(--mid);
+    padding: 9px 12px;
+    margin-bottom: 8px;
+    background: var(--light-green);
+    position: relative;
+  }
+
+  .leader-tag {
+    position: absolute;
+    top: -1px;
+    right: 12px;
+    background: var(--mid);
+    color: white;
+    font-family: 'DM Mono', monospace;
+    font-size: 7.5px;
+    letter-spacing: 0.15em;
+    padding: 2px 8px;
+    text-transform: uppercase;
+  }
+
+  .leader-intro {
+    font-size: 9px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 7px;
+    line-height: 1.4;
+  }
+
+  .leader-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    align-items: end;
+  }
+
+  .leader-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .leader-q {
+    font-size: 9.5px;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 4px;
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  /* SECTION 5 */
+  .close-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .close-card {
+    border: 1px solid var(--border);
+    padding: 8px 10px;
+  }
+
+  .close-title {
+    font-size: 9.5px;
+    font-weight: 600;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 5px;
+  }
+
+  .close-sub {
+    font-size: 9px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 6px;
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .sig-block { display: flex; gap: 40px; }
+
+  .sig-item {}
+
+  .sig-input {
+    width: 140px;
+    border: none;
+    border-bottom: 1px solid #999;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: var(--text);
+    outline: none;
+    padding: 1px 2px;
+    margin-bottom: 3px;
+    display: block;
+  }
+
+  .sig-input:focus { border-bottom-color: var(--mid); }
+
+  .sig-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 7.5px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .footer-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<!-- TOOLBAR -->
+<div class="toolbar no-print">
+  <div class="toolbar-label">Wolf Yardworks — Monthly Performance Review</div>
+  <div class="toolbar-actions">
+    <button class="btn btn-secondary" onclick="clearForm()">Clear Form</button>
+    <button class="btn btn-primary" onclick="window.print()">Save / Print PDF</button>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="brand">WOLF <span>YARDWORKS</span></div>
+      <div class="doc-title">Monthly Employee Performance Review</div>
+    </div>
+    <div class="header-right">
+      <div class="meta-fields">
+        <div class="meta-row">
+          <div class="meta-label">Employee</div>
+          <input class="meta-input" type="text" placeholder="Name" />
+        </div>
+        <div class="meta-row">
+          <div class="meta-label">Month</div>
+          <input class="meta-input" type="text" placeholder="e.g. June 2026" />
+        </div>
+        <div class="meta-row">
+          <div class="meta-label">Reviewer</div>
+          <input class="meta-input" type="text" placeholder="Kaleb / Jason" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-label">Rating Scale</div>
+    <div class="legend-items">
+      <div class="legend-item"><div class="legend-dot" style="background:#002722;border-color:#002722;"></div> 1 — Below Expectations</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#17573c;border-color:#17573c;"></div> 2 — Developing</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e8f2ee;border-color:#aac8bc;"></div> 3 — Meets Expectations</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#4a9c6a;border-color:#4a9c6a;"></div> 4 — Exceeds Expectations</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#5cb870;border-color:#5cb870;"></div> 5 — Outstanding</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="score-section">
+    <div class="section-label">Section 1 — Field Performance</div>
+    <div class="score-grid">
+
+      <div class="score-item">
+        <div class="score-name">Work Quality</div>
+        <div class="score-desc">Cut lines, edging, trimming, blowing. Does the property leave looking like Wolf Yardworks was here.</div>
+        <div class="rating-row">
+          <div class="rating-label">Rating</div>
+          <div class="rating-boxes" data-group="wq">
+            <div class="r-box" data-val="1">1</div><div class="r-box" data-val="2">2</div><div class="r-box" data-val="3">3</div><div class="r-box" data-val="4">4</div><div class="r-box" data-val="5">5</div>
+          </div>
+        </div>
+        <div class="score-note">
+          <div class="note-label">Notes</div>
+          <input class="note-field" type="text" placeholder="Add notes..." />
+        </div>
+      </div>
+
+      <div class="score-item">
+        <div class="score-name">Reliability &amp; Attendance</div>
+        <div class="score-desc">Shows up on time, every scheduled day. Communicates proactively when an issue arises.</div>
+        <div class="rating-row">
+          <div class="rating-label">Rating</div>
+          <div class="rating-boxes" data-group="ra">
+            <div class="r-box" data-val="1">1</div><div class="r-box" data-val="2">2</div><div class="r-box" data-val="3">3</div><div class="r-box" data-val="4">4</div><div class="r-box" data-val="5">5</div>
+          </div>
+        </div>
+        <div class="score-note">
+          <div class="note-label">Notes</div>
+          <input class="note-field" type="text" placeholder="Add notes..." />
+        </div>
+      </div>
+
+      <div class="score-item">
+        <div class="score-name">Attitude &amp; Coachability</div>
+        <div class="score-desc">Receives feedback without defensiveness. Brings effort and a positive presence to the work.</div>
+        <div class="rating-row">
+          <div class="rating-label">Rating</div>
+          <div class="rating-boxes" data-group="ac">
+            <div class="r-box" data-val="1">1</div><div class="r-box" data-val="2">2</div><div class="r-box" data-val="3">3</div><div class="r-box" data-val="4">4</div><div class="r-box" data-val="5">5</div>
+          </div>
+        </div>
+        <div class="score-note">
+          <div class="note-label">Notes</div>
+          <input class="note-field" type="text" placeholder="Add notes..." />
+        </div>
+      </div>
+
+      <div class="score-item">
+        <div class="score-name">Communication</div>
+        <div class="score-desc">Flags property issues, equipment concerns, or schedule conflicts clearly and in a timely way.</div>
+        <div class="rating-row">
+          <div class="rating-label">Rating</div>
+          <div class="rating-boxes" data-group="co">
+            <div class="r-box" data-val="1">1</div><div class="r-box" data-val="2">2</div><div class="r-box" data-val="3">3</div><div class="r-box" data-val="4">4</div><div class="r-box" data-val="5">5</div>
+          </div>
+        </div>
+        <div class="score-note">
+          <div class="note-label">Notes</div>
+          <input class="note-field" type="text" placeholder="Add notes..." />
+        </div>
+      </div>
+
+      <div class="score-item">
+        <div class="score-name">Safety &amp; Equipment Care</div>
+        <div class="score-desc">Operates equipment correctly. Reports damage. Follows PPE and chemical handling protocols.</div>
+        <div class="rating-row">
+          <div class="rating-label">Rating</div>
+          <div class="rating-boxes" data-group="se">
+            <div class="r-box" data-val="1">1</div><div class="r-box" data-val="2">2</div><div class="r-box" data-val="3">3</div><div class="r-box" data-val="4">4</div><div class="r-box" data-val="5">5</div>
+          </div>
+        </div>
+        <div class="score-note">
+          <div class="note-label">Notes</div>
+          <input class="note-field" type="text" placeholder="Add notes..." />
+        </div>
+      </div>
+
+      <div class="score-item">
+        <div class="score-name">Client Interaction</div>
+        <div class="score-desc">Presents professionally on-site. Handles client contact respectfully and represents the brand well.</div>
+        <div class="rating-row">
+          <div class="rating-label">Rating</div>
+          <div class="rating-boxes" data-group="ci">
+            <div class="r-box" data-val="1">1</div><div class="r-box" data-val="2">2</div><div class="r-box" data-val="3">3</div><div class="r-box" data-val="4">4</div><div class="r-box" data-val="5">5</div>
+          </div>
+        </div>
+        <div class="score-note">
+          <div class="note-label">Notes</div>
+          <input class="note-field" type="text" placeholder="Add notes..." />
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section-label">Section 2 — Output &amp; Accountability</div>
+  <div class="speed-row">
+    <div class="speed-cell">
+      <div class="speed-cell-top"><div class="speed-cell-label">Route Speed</div></div>
+      <input class="write-field" type="text" placeholder="Avg. props per day..." />
+    </div>
+    <div class="speed-cell">
+      <div class="speed-cell-top">
+        <div class="speed-cell-label">Callbacks / Complaints</div>
+        <div class="speed-cell-sub">Client issues requiring a return visit or follow-up</div>
+      </div>
+      <input class="write-field" type="text" placeholder="# this month..." />
+    </div>
+    <div class="speed-cell">
+      <div class="speed-cell-top">
+        <div class="speed-cell-label">Callback Detail</div>
+        <div class="speed-cell-sub">What happened and what was the resolution</div>
+      </div>
+      <input class="write-field" type="text" placeholder="Detail..." />
+    </div>
+    <div class="speed-cell">
+      <div class="speed-cell-top"><div class="speed-cell-label">Routes Run Solo</div></div>
+      <input class="write-field" type="text" placeholder="Days run independently..." />
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section-label light">Section 3 — Employee Conversation</div>
+  <div class="convo-grid">
+    <div class="convo-card">
+      <div class="convo-q">What part of the work has felt most natural or satisfying this month?</div>
+      <input class="write-field" type="text" placeholder="Response..." />
+    </div>
+    <div class="convo-card alt">
+      <div class="convo-q">Is there anything about the job that feels unclear, frustrating, or hard to navigate?</div>
+      <input class="write-field" type="text" placeholder="Response..." />
+    </div>
+    <div class="convo-card alt">
+      <div class="convo-q">Where do you want to be in the next year — inside this job or outside it?</div>
+      <input class="write-field" type="text" placeholder="Response..." />
+    </div>
+    <div class="convo-card">
+      <div class="convo-q">Is there something you want to learn or get better at? How can we help make that happen?</div>
+      <input class="write-field" type="text" placeholder="Response..." />
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="leader-section">
+    <div class="leader-tag">Mutual Accountability</div>
+    <div class="section-label outline">Section 4 — How Are We Doing As Leaders</div>
+    <div class="leader-intro">This section is for the employee to speak honestly. We ask because we mean it. Good leadership is something we hold ourselves to, and we want to know where we can improve.</div>
+    <div class="leader-grid">
+      <div class="leader-item">
+        <div class="leader-q">Do you feel like you know what's expected of you? Is there anything that feels unclear about your role?</div>
+        <input class="write-field" type="text" placeholder="Response..." />
+      </div>
+      <div class="leader-item">
+        <div class="leader-q">Do you feel respected and valued on this team? Is there anything we do — or don't do — that affects that?</div>
+        <input class="write-field" type="text" placeholder="Response..." />
+      </div>
+      <div class="leader-item">
+        <div class="leader-q">What's one thing Kaleb or Jason could do differently that would make your job easier or better?</div>
+        <input class="write-field" type="text" placeholder="Response..." />
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="section-label">Section 5 — Close Out</div>
+  <div class="close-grid">
+    <div class="close-card">
+      <div class="close-title">Commitments This Month</div>
+      <div class="close-sub">What does the employee agree to focus on or improve before next review?</div>
+      <input class="write-field" type="text" placeholder="Response..." />
+    </div>
+    <div class="close-card">
+      <div class="close-title">How We'll Support Them</div>
+      <div class="close-sub">What do Kaleb or Jason commit to doing before the next review?</div>
+      <input class="write-field" type="text" placeholder="Response..." />
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="sig-block">
+      <div class="sig-item">
+        <input class="sig-input" type="text" placeholder="Sign here" />
+        <div class="sig-label">Employee Signature</div>
+      </div>
+      <div class="sig-item">
+        <input class="sig-input" type="text" placeholder="Sign here" />
+        <div class="sig-label">Reviewer Signature</div>
+      </div>
+      <div class="sig-item">
+        <input class="sig-input" type="text" placeholder="Date" />
+        <div class="sig-label">Date</div>
+      </div>
+    </div>
+    <div class="footer-brand">WOLF YARDWORKS</div>
+  </div>
+
+</div>
+
+<script>
+  // Rating box click handler
+  document.querySelectorAll('.rating-boxes').forEach(group => {
+    group.querySelectorAll('.r-box').forEach(box => {
+      box.addEventListener('click', () => {
+        group.querySelectorAll('.r-box').forEach(b => b.classList.remove('selected'));
+        box.classList.add('selected');
+      });
+    });
+  });
+
+  // Clear form
+  function clearForm() {
+    if (!confirm('Clear all fields and ratings?')) return;
+    document.querySelectorAll('input').forEach(i => i.value = '');
+    document.querySelectorAll('.r-box').forEach(b => b.classList.remove('selected'));
+  }
+</script>
+</body>
+</html>
